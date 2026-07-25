@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🛡️ RakshaQuant
+# 🛡️ NiftyGraph
 
 ### Agentic Paper Trading System for NSE
 
