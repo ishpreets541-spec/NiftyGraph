@@ -609,7 +609,7 @@ All these questions can be answered by inspecting the traces in the LangSmith da
 ---
 
 <div align="center">
-    <b>Built with ❤️ by a solo developer exploring the BFSI × AI frontier</b>
+   
 </div>
 
 
