@@ -418,6 +418,28 @@ LANGSMITH_API_KEY=your_langsmith_api_key   # free tier; for tracing
 # Free Tier Mode (default — 100% free, no real orders)
 MARKET_DATA_SOURCE=yfinance
 EXECUTION_MODE=local_paper        # or `shadow` to mirror live without sending orders
+```
+
+### Streamlit Deployment
+
+This repo now includes a public Streamlit app at `streamlit_app.py`.
+
+1. Install dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+2. Deploy to Streamlit Cloud or any public hosting platform that supports Python apps.
+
+3. Use the app entrypoint:
+
+```bash
+streamlit run streamlit_app.py
+```
+
+For Streamlit Cloud, point the app to `streamlit_app.py` and it will be publicly accessible once deployed.
+
 ALLOW_LIVE_ORDERS=false           # master safety gate — real orders ONLY when true
 PAPER_WALLET_BALANCE=1000000
 

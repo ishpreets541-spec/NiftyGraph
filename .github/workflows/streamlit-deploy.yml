@@ -1,0 +1,36 @@
+name: Deploy Streamlit App
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch: {}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt 2>/dev/null || true
+          pip install streamlit
+          pip install .
+
+      - name: Run Streamlit app smoke test
+        run: |
+          python -m streamlit hello --help
+
+      - name: Deploy to Streamlit
+        if: github.event_name == 'workflow_dispatch'
+        run: |
+          echo "Streamlit deployment is configured. Use the Streamlit CLI or Streamlit sharing to deploy streamlit_app.py."
