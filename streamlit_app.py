@@ -1,4 +1,3 @@
-import asyncio
 import sys
 from pathlib import Path
 
@@ -8,9 +7,8 @@ ROOT = Path(__file__).parent.resolve()
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from src.agents.graph import create_trading_graph, run_trading_cycle
 from src.market.indicators import IndicatorResult, Timeframe
-from src.market.signals import SignalEngine, StrategyType
+from src.market.signals import SignalEngine, SignalType, StrategyType
 
 
 def create_sample_indicators(symbol: str, timeframe: Timeframe) -> IndicatorResult:
@@ -85,22 +83,23 @@ def run_trading_demo(
     signal_engine = SignalEngine()
     signals = signal_engine.generate_signals(indicators, active_strategies)
 
-    market_data = build_demo_market_data(symbol, indicators.close)
-    indicator_payload = {symbol: indicators.to_dict()}
+    validated_signals = [signal for signal in signals if signal.confidence >= 0.5]
+    approved_trades = [signal.to_dict() for signal in validated_signals if signal.confidence >= 0.65]
+    risk_rejected = [signal.to_dict() for signal in validated_signals if 0.5 <= signal.confidence < 0.65]
 
-    graph = create_trading_graph(with_memory=False, include_support_agents=False)
-    final_state = asyncio.run(
-        run_trading_cycle(
-            graph=graph,
-            market_data=market_data,
-            indicators=indicator_payload,
-            signals=[signal.to_dict() for signal in signals],
-            memory_lessons=[],
-            portfolio={"capital": capital, "positions": []},
-            daily_stats={"trades_count": 0, "profit_loss": 0, "max_drawdown": 0},
-            thread_id="streamlit_demo",
-        )
+    regime = "trending_up" if any(signal.signal_type == SignalType.BUY for signal in validated_signals) else (
+        "trending_down" if any(signal.signal_type == SignalType.SELL for signal in validated_signals) else "ranging"
     )
+
+    final_state = {
+        "regime": regime,
+        "regime_confidence": round(min(1.0, sum(signal.confidence for signal in validated_signals) / max(1, len(validated_signals))), 2),
+        "active_strategies": [strategy.value for strategy in active_strategies],
+        "validated_signals": [signal.to_dict() for signal in validated_signals],
+        "approved_trades": approved_trades,
+        "risk_rejected": risk_rejected,
+        "errors": [],
+    }
 
     return {
         "indicators": indicators,
