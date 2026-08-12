@@ -616,17 +616,15 @@ All these questions can be answered by inspecting the traces in the LangSmith da
 
 ---
 
-## ⚠️ Disclaimer
+---
+### 👩‍💻 Author
+**Ishpreet Singh**
 
-> **EDUCATIONAL PURPOSES ONLY**
->
-> RakshaQuant is a research project to explore Agentic AI in finance. It is **not** financial advice.
->
-> - The default mode is **PAPER TRADING** and is 100% free.
-> - Real broker orders are **never** sent unless you explicitly set `ALLOW_LIVE_ORDERS=true`
->   with valid broker credentials; otherwise live/dhan modes run in safe **shadow** mode.
-> - Do not connect to a live trading account with real funds unless you fully understand the risks.
-> - Algorithmic trading involves significant risk of loss.
+M.Tech
+Indian Institute of Technology Bombay
+Mail ID:
+25m0326@iitb.ac.in
+---
 
 ---
 
